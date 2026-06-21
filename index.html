@@ -558,22 +558,22 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════════ LOGIN SCREEN ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ LOGIN SCREEN ═══════════════════════ -->
 <div id="login-screen">
   <div class="login-glow"></div>
   <div class="login-box">
     <div class="login-logo">Acc<span>enture</span></div>
     <div class="login-subtitle">BOI Project · Rewards &amp; Recognition Portal</div>
-    <div class="login-error" id="login-error">⚠ Please enter a valid Accenture email address (e.g. name@accenture.com)</div>
+    <div class="login-error" id="login-error" style="display:none">⚠ Please enter a valid Accenture email address (e.g. name@accenture.com)</div>
     <div class="login-label">Accenture Email Address</div>
-    <input type="email" class="login-input" id="login-email" placeholder="firstname.lastname@accenture.com" />
+    <input type="text" class="login-input" id="login-email" placeholder="firstname.lastname@accenture.com" />
     <div class="login-note">Sign in with your Accenture email. Only @accenture.com addresses are permitted.<br/>Your session is secured via SSO authentication.</div>
     <button class="btn-sso" onclick="doLogin()">🔐 Continue with Accenture SSO</button>
     <div class="sso-badge"><div class="sso-dot"></div> Protected by Accenture Identity &amp; Access Management</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════ TOPBAR ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
 <div class="topbar" id="topbar" style="display:none">
   <div class="topbar-logo">
     <div class="acc-logo">Acc<span>enture</span></div>
@@ -589,7 +589,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════ MAIN APP ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ MAIN APP ═══════════════════════ -->
 <div id="main-app">
 
   <!-- HERO -->
@@ -889,6 +889,24 @@
       <input type="text" id="edit-subteam" />
       <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, UXP etc. Please don't mention Squad Name.</div>
     </div>
+    <!-- Team Award members — shown only when editing a team_award nomination -->
+    <div id="edit-team-members-section" style="display:none;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <label style="margin-bottom:0">Additional Team Members</label>
+          <div class="field-hint" style="margin-top:2px">Add every other team member to be recognised.</div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addEditTeamMember()" style="flex-shrink:0;margin-left:12px">＋ Add Member</button>
+      </div>
+      <div class="team-members-list">
+        <div class="team-member-header">
+          <span>Full Name</span>
+          <span>Email Address</span>
+          <span style="padding:7px 10px;min-width:42px"></span>
+        </div>
+        <div id="edit-team-members-rows"></div>
+      </div>
+    </div>
     <div class="edit-form-group">
       <label>Reason / Citation</label>
       <textarea id="edit-reason" rows="4"></textarea>
@@ -910,17 +928,6 @@
       <button class="btn btn-secondary" onclick="closeModal('modal-delete')">Cancel</button>
       <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
     </div>
-  </div>
-</div>
-
-<!-- MODAL: NOMINATION DETAIL -->
-<div class="modal-backdrop" id="modal-detail">
-  <div class="modal" style="max-width:620px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <h3 style="margin-bottom:0">📄 Nomination Details</h3>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕ Close</button>
-    </div>
-    <div id="detail-modal-body"></div>
   </div>
 </div>
 
@@ -1183,10 +1190,17 @@ function renderTable() {
       <td style="font-size:12px;color:var(--acc-gray-500);white-space:nowrap">${n.date}</td>
       <td><span class="badge badge-${n.status==='approved'?'approved':'pending'}">${n.status==='approved'?'✔ Approved':'⏳ Pending'}</span></td>
       <td class="${rankClass}" style="font-size:13px;text-align:center">${rankLabel}</td>
+      <td style="font-size:12px;white-space:nowrap">
+        ${n.status==='approved' && n.approvedBy
+          ? `<span style="display:inline-flex;align-items:center;gap:4px;color:#007a5a;font-weight:600"><span style="color:var(--acc-green)">✔</span>${n.approvedBy}</span>`
+          : n.removedBy
+          ? `<span style="display:inline-flex;align-items:center;gap:4px;color:var(--acc-red);font-weight:600"><span>✖</span>${n.removedBy}</span>`
+          : '<span style="color:var(--acc-gray-300)">—</span>'}
+      </td>
       <td>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           ${isOwner && !isApproved ? `<button class="btn btn-secondary btn-sm" onclick="openEdit('${n.id}')">✏ Edit</button>` : ''}
-          ${isOwner && !isApproved ? `<button class="btn btn-danger btn-sm" onclick="openDelete('${n.id}')">🗑</button>` : ''}
+          ${isOwner && !isApproved ? `<button class="btn btn-danger btn-sm" onclick="openDelete('${n.id}')">🗑 Delete</button>` : ''}
           ${!isApproved ? `<button class="btn btn-gold btn-sm" onclick="openApprove('${n.id}')">✔ Approve</button>` : ''}
           ${isApproved ? `<button class="btn btn-danger btn-sm" onclick="openRemove('${n.id}')">✖ Remove</button>` : ''}
         </div>
@@ -1264,6 +1278,33 @@ function confirmFlush() {
 // ══════════════════════════════════════════════
 //  MODALS — EDIT
 // ══════════════════════════════════════════════
+let editMemberRowId = 0;
+function addEditTeamMember(name='', email='') {
+  editMemberRowId++;
+  const rowId = 'etmr-' + editMemberRowId;
+  const div = document.createElement('div');
+  div.className = 'team-member-row';
+  div.id = rowId;
+  div.innerHTML = `<input type="text" placeholder="Full Name" data-role="etm-name" value="${name.replace(/"/g,'&quot;')}" />
+    <input type="email" placeholder="email@accenture.com" data-role="etm-email" value="${email.replace(/"/g,'&quot;')}" />
+    <button type="button" class="remove-member-btn" onclick="removeEditTeamMember('${rowId}')" title="Remove">✕</button>`;
+  document.getElementById('edit-team-members-rows').appendChild(div);
+}
+function removeEditTeamMember(rowId) {
+  const el = document.getElementById(rowId);
+  if (el) el.remove();
+}
+function getEditTeamMembers() {
+  const rows = document.querySelectorAll('#edit-team-members-rows .team-member-row');
+  const members = [];
+  for (const row of rows) {
+    const name = row.querySelector('[data-role="etm-name"]').value.trim();
+    const email = row.querySelector('[data-role="etm-email"]').value.trim().toLowerCase();
+    if (name || email) members.push({ name, email });
+  }
+  return members;
+}
+
 function openEdit(id) {
   const n = nominations.find(x => x.id === id);
   if (!n || n.nominatedBy !== currentUser) { toast('✖ You can only edit your own nominations.', 'error'); return; }
@@ -1273,6 +1314,23 @@ function openEdit(id) {
   document.getElementById('edit-team').value = n.team;
   document.getElementById('edit-subteam').value = n.subTeam || '';
   document.getElementById('edit-reason').value = n.reason;
+
+  // Populate team members section for Team Award
+  const teamSec = document.getElementById('edit-team-members-section');
+  const teamRows = document.getElementById('edit-team-members-rows');
+  teamRows.innerHTML = '';
+  editMemberRowId = 0;
+  if (n.category === 'team_award') {
+    teamSec.style.display = 'block';
+    if (n.teamMembers && n.teamMembers.length > 0) {
+      n.teamMembers.forEach(m => addEditTeamMember(m.name || '', m.email || ''));
+    } else {
+      addEditTeamMember();
+    }
+  } else {
+    teamSec.style.display = 'none';
+  }
+
   openModal('modal-edit');
 }
 
@@ -1294,6 +1352,17 @@ function saveEdit() {
   n.team = document.getElementById('edit-team').value.trim();
   n.subTeam = document.getElementById('edit-subteam').value.trim();
   n.reason = document.getElementById('edit-reason').value.trim();
+  if (n.category === 'team_award') {
+    const editedMembers = getEditTeamMembers();
+    for (const m of editedMembers) {
+      if (m.name && !m.email) { toast('⚠ Please add an email for each team member.', 'warn'); return; }
+      if (m.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.email)) { toast('⚠ Invalid email for team member: ' + m.name, 'warn'); return; }
+    }
+    const allEmails = [email, ...editedMembers.map(m=>m.email).filter(Boolean)];
+    const dupInternal = allEmails.find((e,i) => allEmails.indexOf(e) !== i);
+    if (dupInternal) { toast('⚠ Duplicate email in team list: ' + dupInternal, 'warn'); return; }
+    n.teamMembers = editedMembers;
+  }
   save(); renderTable();
   closeModal('modal-edit');
   toast('✅ Nomination updated.', 'success');
@@ -1473,6 +1542,17 @@ function openDetail(id) {
 // Init
 updateStats();
 </script>
+
+<!-- MODAL: NOMINATION DETAIL -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal" style="max-width:620px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <h3 style="margin-bottom:0">📄 Nomination Details</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕ Close</button>
+    </div>
+    <div id="detail-modal-body"></div>
+  </div>
+</div>
 
 </body>
 </html>
