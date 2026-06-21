@@ -558,7 +558,7 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════════ LOGIN SCREEN ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ LOGIN SCREEN ═══════════════════════ -->
 <div id="login-screen">
   <div class="login-glow"></div>
   <div class="login-box">
@@ -573,7 +573,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════ TOPBAR ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
 <div class="topbar" id="topbar" style="display:none">
   <div class="topbar-logo">
     <div class="acc-logo">Acc<span>enture</span></div>
@@ -589,7 +589,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════ MAIN APP ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════ MAIN APP ═══════════════════════ -->
 <div id="main-app">
 
   <!-- HERO -->
@@ -867,18 +867,38 @@
 
 <!-- MODAL: EDIT NOMINATION -->
 <div class="modal-backdrop" id="modal-edit">
-  <div class="modal" style="max-width:560px">
+  <div class="modal" style="max-width:600px">
     <h3>✏ Edit Nomination</h3>
     <p>Update the details below. You can only edit your own nominations.</p>
     <input type="hidden" id="edit-id" />
     <div class="edit-form-group">
-      <label>Nominee Name <span class="req">*</span></label>
+      <label>Primary Nominee Name <span class="req">*</span></label>
       <input type="text" id="edit-name" />
     </div>
     <div class="edit-form-group">
-      <label>Nominee Email <span class="req">*</span></label>
+      <label>Primary Nominee Email <span class="req">*</span></label>
       <input type="email" id="edit-email" />
     </div>
+
+    <!-- Team Award: additional members (shown only for team_award) -->
+    <div class="edit-form-group" id="edit-team-members-section" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <label style="margin-bottom:0">Additional Team Members</label>
+          <div class="field-hint" style="margin-top:2px">Add or remove team members. Each needs a unique email.</div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addEditTeamMember()" style="flex-shrink:0;margin-left:12px">＋ Add Member</button>
+      </div>
+      <div class="team-members-list">
+        <div class="team-member-header">
+          <span>Full Name</span>
+          <span>Email Address</span>
+          <span style="padding:7px 10px;min-width:42px"></span>
+        </div>
+        <div id="edit-team-members-rows"></div>
+      </div>
+    </div>
+
     <div class="edit-form-group">
       <label>Team Name</label>
       <input type="text" id="edit-team" />
@@ -910,17 +930,6 @@
       <button class="btn btn-secondary" onclick="closeModal('modal-delete')">Cancel</button>
       <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
     </div>
-  </div>
-</div>
-
-<!-- MODAL: NOMINATION DETAIL -->
-<div class="modal-backdrop" id="modal-detail">
-  <div class="modal" style="max-width:620px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <h3 style="margin-bottom:0">📄 Nomination Details</h3>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕ Close</button>
-    </div>
-    <div id="detail-modal-body"></div>
   </div>
 </div>
 
@@ -1039,9 +1048,9 @@ function addTeamMember() {
   const div = document.createElement('div');
   div.className = 'team-member-row';
   div.id = rowId;
-  div.innerHTML = `<input type="text" placeholder="Full Name" data-role="tm-name" />
+  div.innerHTML = \`<input type="text" placeholder="Full Name" data-role="tm-name" />
     <input type="email" placeholder="email@accenture.com" data-role="tm-email" />
-    <button type="button" class="remove-member-btn" onclick="removeTeamMember('${rowId}')" title="Remove">✕</button>`;
+    <button type="button" class="remove-member-btn" onclick="removeTeamMember('\${rowId}')" title="Remove">✕</button>\`;
   document.getElementById('team-members-rows').appendChild(div);
 }
 
@@ -1183,8 +1192,15 @@ function renderTable() {
       <td style="font-size:12px;color:var(--acc-gray-500);white-space:nowrap">${n.date}</td>
       <td><span class="badge badge-${n.status==='approved'?'approved':'pending'}">${n.status==='approved'?'✔ Approved':'⏳ Pending'}</span></td>
       <td class="${rankClass}" style="font-size:13px;text-align:center">${rankLabel}</td>
+      <td style="font-size:12px;min-width:140px">
+        ${n.status==='approved' && n.approvedBy
+          ? `<span style="display:inline-flex;align-items:center;gap:4px;color:#007a5a;font-weight:600">✔ ${n.approvedBy}</span><div style="color:var(--acc-gray-500);font-size:11px;margin-top:2px">${n.approvedAt||''}</div>`
+          : n.removedBy
+            ? `<span style="display:inline-flex;align-items:center;gap:4px;color:var(--acc-red);font-weight:600">✖ ${n.removedBy}</span><div style="color:var(--acc-gray-500);font-size:11px;margin-top:2px">${n.removedAt||''}</div>`
+            : '<span style="color:var(--acc-gray-300)">—</span>'}
+      </td>
       <td>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
           ${isOwner && !isApproved ? `<button class="btn btn-secondary btn-sm" onclick="openEdit('${n.id}')">✏ Edit</button>` : ''}
           ${isOwner && !isApproved ? `<button class="btn btn-danger btn-sm" onclick="openDelete('${n.id}')">🗑</button>` : ''}
           ${!isApproved ? `<button class="btn btn-gold btn-sm" onclick="openApprove('${n.id}')">✔ Approve</button>` : ''}
@@ -1264,6 +1280,31 @@ function confirmFlush() {
 // ══════════════════════════════════════════════
 //  MODALS — EDIT
 // ══════════════════════════════════════════════
+let editMemberRowId = 0;
+
+function addEditTeamMember(name='', email='') {
+  editMemberRowId++;
+  const rowId = 'etmr-' + editMemberRowId;
+  const div = document.createElement('div');
+  div.className = 'team-member-row';
+  div.id = rowId;
+  div.innerHTML = `<input type="text" placeholder="Full Name" data-role="etm-name" value="${name}" />
+    <input type="email" placeholder="email@accenture.com" data-role="etm-email" value="${email}" />
+    <button type="button" class="remove-member-btn" onclick="document.getElementById('${rowId}').remove()" title="Remove">✕</button>`;
+  document.getElementById('edit-team-members-rows').appendChild(div);
+}
+
+function getEditTeamMembers() {
+  const rows = document.querySelectorAll('#edit-team-members-rows .team-member-row');
+  const members = [];
+  for (const row of rows) {
+    const name = row.querySelector('[data-role="etm-name"]').value.trim();
+    const email = row.querySelector('[data-role="etm-email"]').value.trim().toLowerCase();
+    if (name || email) members.push({ name, email });
+  }
+  return members;
+}
+
 function openEdit(id) {
   const n = nominations.find(x => x.id === id);
   if (!n || n.nominatedBy !== currentUser) { toast('✖ You can only edit your own nominations.', 'error'); return; }
@@ -1273,6 +1314,23 @@ function openEdit(id) {
   document.getElementById('edit-team').value = n.team;
   document.getElementById('edit-subteam').value = n.subTeam || '';
   document.getElementById('edit-reason').value = n.reason;
+
+  // Handle Team Award members
+  const membersSection = document.getElementById('edit-team-members-section');
+  const membersRows = document.getElementById('edit-team-members-rows');
+  membersRows.innerHTML = '';
+  editMemberRowId = 0;
+  if (n.category === 'team_award') {
+    membersSection.style.display = 'block';
+    if (n.teamMembers && n.teamMembers.length > 0) {
+      n.teamMembers.forEach(m => addEditTeamMember(m.name || '', m.email || ''));
+    } else {
+      addEditTeamMember(); // start with one blank row
+    }
+  } else {
+    membersSection.style.display = 'none';
+  }
+
   openModal('modal-edit');
 }
 
@@ -1294,6 +1352,20 @@ function saveEdit() {
   n.team = document.getElementById('edit-team').value.trim();
   n.subTeam = document.getElementById('edit-subteam').value.trim();
   n.reason = document.getElementById('edit-reason').value.trim();
+
+  // Save team members if Team Award
+  if (n.category === 'team_award') {
+    const members = getEditTeamMembers();
+    for (const m of members) {
+      if (m.name && !m.email) { toast('⚠ Please add an email for each team member.', 'warn'); return; }
+      if (m.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.email)) { toast('⚠ Invalid email: ' + m.email, 'warn'); return; }
+    }
+    const allEmails = [email, ...members.map(m => m.email).filter(Boolean)];
+    const dupInternal = allEmails.find((e, i) => allEmails.indexOf(e) !== i);
+    if (dupInternal) { toast('⚠ Duplicate email in team list: ' + dupInternal, 'warn'); return; }
+    n.teamMembers = members;
+  }
+
   save(); renderTable();
   closeModal('modal-edit');
   toast('✅ Nomination updated.', 'success');
@@ -1473,6 +1545,17 @@ function openDetail(id) {
 // Init
 updateStats();
 </script>
+
+<!-- MODAL: NOMINATION DETAIL -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal" style="max-width:620px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <h3 style="margin-bottom:0">📄 Nomination Details</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')">✕ Close</button>
+    </div>
+    <div id="detail-modal-body"></div>
+  </div>
+</div>
 
 </body>
 </html>
