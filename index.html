@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Accenture BOI — Rewards & Recognition Portal</title>
-<style> 
+<style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Barlow:wght@600;700;800&display=swap');
 
   :root {
@@ -363,7 +363,7 @@
     border-bottom: 1px solid var(--acc-gray-200);
   }
   td {
-    padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--acc-gray-100);
+    padding: 10px 14px; font-size: 11px; border-bottom: 1px solid var(--acc-gray-100);
     vertical-align: middle;
   }
   tr:last-child td { border-bottom: none; }
@@ -479,7 +479,7 @@
   .nominee-link {
     color: var(--acc-purple); font-weight: 700; cursor: pointer;
     text-decoration: underline; text-underline-offset: 2px;
-    transition: color 0.15s;
+    transition: color 0.15s; font-size: 11px;
   }
   .nominee-link:hover { color: var(--acc-purple-dark); }
   .detail-members-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -756,7 +756,7 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Primary Nominee Full Name <span class="req">*</span></label>
-            <input type="text" id="q-nominee-name" maxlength="45" placeholder="First Last" />
+            <input type="text" id="q-nominee-name" maxlength="45" placeholder="First Last" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
           </div>
           <div class="form-group">
             <label>Primary Nominee Email <span class="req">*</span></label>
@@ -792,7 +792,7 @@
           <div class="form-group">
             <label>Team Sub Name</label>
             <input type="text" id="q-subteam" maxlength="45" placeholder="Enter sub team name" />
-            <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, UXP etc. Please don't mention Squad Name. Programme Name can be mentioned.</div>
+            <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, PMO, UXP etc. (Please don't mention Squad Name) </div>
           </div>
           <div class="form-group span2">
             <label>Reason / Citation <span class="req">*</span></label>
@@ -825,7 +825,7 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Nominee Full Name <span class="req">*</span></label>
-            <input type="text" id="s-nominee-name" maxlength="45" placeholder="First Last" />
+            <input type="text" id="s-nominee-name" maxlength="45" placeholder="First Last" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
           </div>
           <div class="form-group">
             <label>Nominee Email Address <span class="req">*</span></label>
@@ -839,7 +839,7 @@
           <div class="form-group">
             <label>Team Sub Name</label>
             <input type="text" id="s-subteam" maxlength="45" placeholder="Enter sub team name" />
-            <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, UXP etc. Please don't mention Squad Name. Programme Name can be mentioned.</div>
+            <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, PMO, UXP etc. (Please don't mention Squad Name) </div>
           </div>
           <div class="form-group span2">
             <label>Reason / Citation <span class="req">*</span></label>
@@ -856,6 +856,16 @@
 
   <!-- ══ PAGE: ALL SUBMISSIONS ══ -->
   <div class="page" id="page-submissions">
+
+    <!-- Passcode operations info banner -->
+    <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:14px 20px;box-shadow:var(--shadow-sm);margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:18px">🔐</span>
+      <div style="flex:1;min-width:200px">
+        <span style="font-size:13px;font-weight:700;color:var(--acc-black)">Passcode Operations — </span>
+        <span style="font-size:13px;color:var(--acc-gray-500)">Use the passcode prompt when clicking <strong>Approve</strong>, <strong>Reject</strong>, or <strong>Delete</strong>. Passcodes are case-sensitive. For approval, you may also assign a rank after passcode is validated.</span>
+      </div>
+    </div>
+
     <div class="section-header">
       <div>
         <div class="section-title">📋 All Submissions</div>
@@ -868,7 +878,7 @@
       <div class="table-toolbar">
         <div class="search-box">
           <span style="color:var(--acc-gray-500)">🔍</span>
-          <input type="text" placeholder="Search by name, email, team…" id="search-input" oninput="renderTable()" />
+          <input type="text" placeholder="Search by Nominee Name..." id="search-input" oninput="renderTable()" />
         </div>
         <div class="filter-tabs">
           <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
@@ -886,7 +896,6 @@
               <th><div class="th-inner"><span class="th-label">Type</span><span class="filter-btn-icon" id="fbtn-type" onclick="toggleFilter(event,'type')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Category</span><span class="filter-btn-icon" id="fbtn-category" onclick="toggleFilter(event,'category')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Nominee</span><span class="filter-btn-icon" id="fbtn-nominee" onclick="toggleFilter(event,'nominee')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Email</span><span class="filter-btn-icon" id="fbtn-email" onclick="toggleFilter(event,'email')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Team</span><span class="filter-btn-icon" id="fbtn-team" onclick="toggleFilter(event,'team')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Sub Team</span><span class="filter-btn-icon" id="fbtn-subteam" onclick="toggleFilter(event,'subteam')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Nominated By</span><span class="filter-btn-icon" id="fbtn-nominatedby" onclick="toggleFilter(event,'nominatedby')">▼</span></div></th>
@@ -930,7 +939,13 @@
           <button class="btn btn-primary" onclick="openAddUserModal()">＋ Register New User</button>
         </div>
         <div id="users-table-wrap">
-          <div style="text-align:center;padding:20px;color:var(--acc-gray-500);font-size:13px" id="users-loading-msg">⏳ Loading users from Google Sheets…</div>
+          <div style="padding:10px 0 12px 0">
+            <div class="search-box" style="max-width:320px">
+              <span style="color:var(--acc-gray-500)">🔍</span>
+              <input type="text" placeholder="Filter by name, email or role…" id="users-search-input" oninput="renderUsersTable()" style="width:260px" />
+            </div>
+          </div>
+          <div style="text-align:center;padding:20px;color:var(--acc-gray-500);font-size:13px" id="users-loading-msg">⏳ Loading users…</div>
           <table id="users-table" style="display:none;width:100%;border-collapse:collapse;font-size:13px">
             <thead>
               <tr style="background:var(--acc-gray-100)">
@@ -950,8 +965,8 @@
       <!-- Sync / Google Sheets status -->
       <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
         <div style="flex:1;min-width:200px">
-          <h4 style="font-size:14px;font-weight:700;margin-bottom:4px">☁ Google Sheets Sync</h4>
-          <div style="font-size:12px;color:var(--acc-gray-500)" id="sync-status-text">Data source: Google Sheets (Apps Script)</div>
+          <h4 style="font-size:14px;font-weight:700;margin-bottom:4px">☁ Data Sync</h4>
+          <div style="font-size:12px;color:var(--acc-gray-500)" id="sync-status-text">Sync nominations and user data with the portal backend</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-secondary" onclick="syncNominationsFromSheet()">🔄 Sync Nominations</button>
@@ -1095,7 +1110,7 @@
     <input type="hidden" id="edit-id" />
     <div class="edit-form-group">
       <label>Nominee Name <span class="req">*</span></label>
-      <input type="text" id="edit-name" maxlength="45" />
+      <input type="text" id="edit-name" maxlength="45" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
     </div>
     <div class="edit-form-group">
       <label>Nominee Email <span class="req">*</span></label>
@@ -1109,7 +1124,7 @@
     <div class="edit-form-group">
       <label>Team Sub Name</label>
       <input type="text" id="edit-subteam" maxlength="45" />
-      <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, UXP etc. Please don't mention Squad Name.</div>
+      <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, PMO, UXP etc. (Please don't mention Squad Name) </div>
     </div>
     <!-- Team Award members — shown only when editing a team_award nomination -->
     <div id="edit-team-members-section" style="display:none;margin-bottom:16px">
@@ -1188,8 +1203,18 @@ async function sha256(message) {
 }
 
 // ══════════════════════════════════════════════════════════════════
-//  CHAR COUNTER
+//  DATE HELPER — strips time component from any date string
 // ══════════════════════════════════════════════════════════════════
+function formatDateOnly(val) {
+  if (!val) return '—';
+  // If it already looks like "01 Jan 2025" (no digits after the year) just return it
+  if (/^\d{2}\s[A-Za-z]{3}\s\d{4}$/.test(String(val).trim())) return String(val).trim();
+  const d = new Date(val);
+  if (isNaN(d.getTime())) return String(val).split('T')[0]; // fallback: cut off time
+  return d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+}
+
+
 function updateCharCount(textareaId, counterId) {
   const ta = document.getElementById(textareaId);
   const el = document.getElementById(counterId);
@@ -1205,7 +1230,7 @@ function updateCharCount(textareaId, counterId) {
 // ══════════════════════════════════════════════════════════════════
 let currentUser = null;       // { email, name, role }
 let nominations = [];
-let registeredUsers = [];     // loaded from Google Sheets
+let registeredUsers = [];     // loaded from portal backend
 let tableFilter = 'all';
 let pendingActionId = null;
 let pendingResetEmail = null;
@@ -1393,20 +1418,20 @@ async function loadNominationsFromSheet() {
   try {
     const res = await gasCall({ action: 'getNominations' });
     if (res.success) {
-      nominations = res.data || [];
+      nominations = (res.data || []).map(n => ({ ...n, date: formatDateOnly(n.date) }));
       buildCategoryCards();
       renderTable();
       updateStats();
     }
   } catch(e) {
-    toast('⚠ Could not load nominations from Google Sheets.', 'warn');
+    toast('⚠ Could not load nominations. Please try again.', 'warn');
   }
 }
 
 async function syncNominationsFromSheet() {
   toast('🔄 Syncing…', 'info');
   await loadNominationsFromSheet();
-  toast('✅ Nominations synced from Google Sheets.', 'success');
+  toast('✅ Nominations synced successfully.', 'success');
 }
 
 async function saveNomination(rec) {
@@ -1417,9 +1442,9 @@ async function saveNomination(rec) {
     buildCategoryCards();
     renderTable();
     updateStats();
-    toast('✅ Nomination submitted and saved to Google Sheets!', 'success');
+    toast('✅ Nomination submitted successfully!', 'success');
   } catch(e) {
-    toast('⚠ Error saving to Google Sheets: ' + e.message, 'warn');
+    toast('⚠ Error saving nomination: ' + e.message, 'warn');
   }
 }
 
@@ -1432,7 +1457,7 @@ async function updateNomination(id, changes) {
     renderTable();
     updateStats();
   } catch(e) {
-    toast('⚠ Error updating Google Sheets: ' + e.message, 'warn');
+    toast('⚠ Error updating nomination: ' + e.message, 'warn');
   }
 }
 
@@ -1445,7 +1470,7 @@ async function deleteNomination(id) {
     renderTable();
     updateStats();
   } catch(e) {
-    toast('⚠ Error deleting from Google Sheets: ' + e.message, 'warn');
+    toast('⚠ Error deleting nomination: ' + e.message, 'warn');
   }
 }
 
@@ -1472,11 +1497,17 @@ async function refreshUsers() {
 
 function renderUsersTable() {
   const tbody = document.getElementById('users-tbody');
-  if (!registeredUsers.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--acc-gray-500)">No users registered yet.</td></tr>';
+  const q = (document.getElementById('users-search-input') ? document.getElementById('users-search-input').value : '').toLowerCase().trim();
+  const list = q ? registeredUsers.filter(u =>
+    (u.email||'').toLowerCase().includes(q) ||
+    (u.name||'').toLowerCase().includes(q) ||
+    (u.role||'').toLowerCase().includes(q)
+  ) : registeredUsers;
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--acc-gray-500)">${q ? 'No users match your search.' : 'No users registered yet.'}</td></tr>`;
     return;
   }
-  tbody.innerHTML = registeredUsers.map((u, i) => `
+  tbody.innerHTML = list.map((u, i) => `
     <tr style="border-bottom:1px solid var(--acc-gray-200)">
       <td style="padding:10px 12px;color:var(--acc-gray-500)">${i+1}</td>
       <td style="padding:10px 12px;font-weight:500">${u.email}</td>
@@ -1484,7 +1515,7 @@ function renderUsersTable() {
       <td style="padding:10px 12px">
         <span style="font-size:11px;padding:2px 10px;border-radius:20px;background:${u.role==='admin'?'#f0e6ff':'var(--acc-gray-100)'};color:${u.role==='admin'?'var(--acc-purple)':'var(--acc-gray-700)'};font-weight:600">${u.role || 'user'}</span>
       </td>
-      <td style="padding:10px 12px;font-size:12px;color:var(--acc-gray-500)">${u.registeredAt || '—'}</td>
+      <td style="padding:10px 12px;font-size:12px;color:var(--acc-gray-500)">${u.registeredAt ? formatDateOnly(u.registeredAt) : '—'}</td>
       <td style="padding:10px 12px">
         <div style="display:flex;gap:6px">
           <button class="btn btn-secondary btn-sm" onclick="openResetUserPw('${u.email}')">🔑 Reset PW</button>
@@ -1622,7 +1653,7 @@ function addTeamMember() {
   const div = document.createElement('div');
   div.className = 'team-member-row';
   div.id = rowId;
-  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="tm-name" />
+  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="tm-name" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
     <input type="email" placeholder="email@accenture.com" maxlength="45" data-role="tm-email" />
     <button type="button" class="remove-member-btn" onclick="removeTeamMember('${rowId}')" title="Remove">✕</button>`;
   document.getElementById('team-members-rows').appendChild(div);
@@ -1759,42 +1790,95 @@ function outsideFilterClick(e) {
 }
 
 let panel_currentVals = [], panel_col = null;
+// Tracks live checkbox state while the panel is open (persists across search refinements)
+let panel_pendingSelection = null; // null = "no changes yet, use saved filter"
 
 function renderEfpList(col, allVals, selected, search) {
   const list = document.getElementById('efp-list');
   const filtered = search ? allVals.filter(v => v.toLowerCase().includes(search.toLowerCase())) : allVals;
-  const allChecked = filtered.length > 0 && filtered.every(v => selected.size === 0 || selected.has(v));
+  // Determine checked state:
+  //   1. If pendingSelection exists (user already interacted), use it.
+  //   2. If a saved filter exists (selected.size > 0), restore those ticks.
+  //   3. Fresh open with no saved filter → all UNchecked (user must pick what they want).
+  const isChecked = v => {
+    if (panel_pendingSelection !== null) return panel_pendingSelection.has(v);
+    if (selected.size > 0) return selected.has(v);
+    return false; // fresh open — start unchecked
+  };
+  const allChecked = filtered.length > 0 && filtered.every(v => isChecked(v));
   list.innerHTML = `<label class="efp-item select-all"><input type="checkbox" id="efp-select-all" ${allChecked?'checked':''} onchange="efpToggleAll(this)" /><span>(Select All)</span></label>` +
-    filtered.map(v => `<label class="efp-item"><input type="checkbox" value="${v.replace(/"/g,'&quot;')}" ${selected.size===0||selected.has(v)?'checked':''} onchange="efpToggleItem(this)" /><span>${v}</span></label>`).join('');
+    filtered.map(v => `<label class="efp-item"><input type="checkbox" value="${v.replace(/"/g,'&quot;')}" ${isChecked(v)?'checked':''} onchange="efpToggleItem(this)" /><span>${v}</span></label>`).join('');
   panel_currentVals = filtered; panel_col = col;
 }
 
 function efpSearch() {
   const q = document.getElementById('efp-search-input').value;
   const allVals = [...new Set(nominations.map(n => getColValue(n, panel_col)))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  // Snapshot current checkbox state into pendingSelection before re-rendering
+  const checks = document.querySelectorAll('#efp-list .efp-item:not(.select-all) input');
+  if (checks.length > 0) {
+    if (panel_pendingSelection === null) {
+      // Initialise: if a saved filter exists restore it, otherwise start empty (nothing checked)
+      const saved = colFilters[panel_col];
+      panel_pendingSelection = saved && saved.size > 0 ? new Set(saved) : new Set();
+    }
+    checks.forEach(c => { if (c.checked) panel_pendingSelection.add(c.value); else panel_pendingSelection.delete(c.value); });
+  }
   renderEfpList(panel_col, allVals, colFilters[panel_col]||new Set(), q);
 }
-function efpToggleAll(cb) { document.querySelectorAll('#efp-list .efp-item:not(.select-all) input').forEach(c => c.checked = cb.checked); }
+function efpToggleAll(cb) {
+  document.querySelectorAll('#efp-list .efp-item:not(.select-all) input').forEach(c => c.checked = cb.checked);
+  const allVals = [...new Set(nominations.map(n => getColValue(n, panel_col)))];
+  if (panel_pendingSelection === null) {
+    const saved = colFilters[panel_col];
+    panel_pendingSelection = saved && saved.size > 0 ? new Set(saved) : new Set();
+  }
+  panel_currentVals.forEach(v => { if (cb.checked) panel_pendingSelection.add(v); else panel_pendingSelection.delete(v); });
+}
 function efpToggleItem(cb) {
   const checks = document.querySelectorAll('#efp-list .efp-item:not(.select-all) input');
   document.getElementById('efp-select-all').checked = [...checks].every(c => c.checked);
+  const allVals = [...new Set(nominations.map(n => getColValue(n, panel_col)))];
+  if (panel_pendingSelection === null) {
+    const saved = colFilters[panel_col];
+    panel_pendingSelection = saved && saved.size > 0 ? new Set(saved) : new Set();
+  }
+  if (cb.checked) panel_pendingSelection.add(cb.value); else panel_pendingSelection.delete(cb.value);
 }
 function efpApply() {
-  const checks = document.querySelectorAll('#efp-list .efp-item:not(.select-all) input');
-  const checked = [...checks].filter(c=>c.checked).map(c=>c.value);
-  const unchecked = [...checks].filter(c=>!c.checked);
-  if (!unchecked.length) delete colFilters[panel_col];
-  else colFilters[panel_col] = new Set(checked);
+  const allVals = [...new Set(nominations.map(n => getColValue(n, panel_col)))];
+  // Use pendingSelection if any interactions happened, else read checkboxes directly
+  let newSet;
+  if (panel_pendingSelection !== null) {
+    // Also sync the currently visible checkboxes into pendingSelection one final time
+    const checks = document.querySelectorAll('#efp-list .efp-item:not(.select-all) input');
+    checks.forEach(c => { if (c.checked) panel_pendingSelection.add(c.value); else panel_pendingSelection.delete(c.value); });
+    newSet = new Set(panel_pendingSelection);
+  } else {
+    // No search was used — read checkboxes directly
+    const checks = document.querySelectorAll('#efp-list .efp-item:not(.select-all) input');
+    newSet = new Set([...checks].filter(c => c.checked).map(c => c.value));
+  }
+
+  // If everything or nothing is selected, clear the filter
+  if (newSet.size === 0 || newSet.size === allVals.length) {
+    delete colFilters[panel_col];
+  } else {
+    colFilters[panel_col] = newSet;
+  }
+
+  panel_pendingSelection = null;
   updateFilterBtnState(panel_col);
-  closeFilterPanel(); renderTable();
+  closeFilterPanel();
+  renderTable();
 }
-function efpClear() { delete colFilters[panel_col]; updateFilterBtnState(panel_col); closeFilterPanel(); renderTable(); }
+function efpClear() { panel_pendingSelection = null; delete colFilters[panel_col]; updateFilterBtnState(panel_col); closeFilterPanel(); renderTable(); }
 function updateFilterBtnState(col) {
   const btn = document.getElementById('fbtn-'+col);
   if (!btn) return;
   btn.classList.toggle('active', !!(colFilters[col] && colFilters[col].size > 0));
 }
-function closeFilterPanel() { document.getElementById('excel-filter-panel').classList.remove('open'); activeFilterCol = null; }
+function closeFilterPanel() { panel_pendingSelection = null; document.getElementById('excel-filter-panel').classList.remove('open'); activeFilterCol = null; }
 
 function renderTable() {
   const q = (document.getElementById('search-input').value || '').toLowerCase();
@@ -1817,7 +1901,7 @@ function renderTable() {
   }
   const tbody = document.getElementById('submissions-tbody');
   if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="13"><div class="empty-state"><div class="empty-icon">📭</div><p>No submissions match your filter.</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12"><div class="empty-state"><div class="empty-icon">📭</div><p>No submissions match your filter.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = rows.map((n,i) => {
@@ -1827,18 +1911,17 @@ function renderTable() {
     const rankLabel = n.rank ? (rankEmojis[n.rank]?rankEmojis[n.rank]+' #'+n.rank:'#'+n.rank) : '—';
     const rankClass = n.rank && n.rank <= 3 ? 'rank-'+n.rank : '';
     return `<tr>
-      <td style="color:var(--acc-gray-500);font-size:12px">${i+1}</td>
-      <td><span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${n.type==='quarterly'?'#f0e6ff':'#fff8e0'};color:${n.type==='quarterly'?'var(--acc-purple)':'#996600'};font-weight:600">${n.type==='quarterly'?'Quarterly':'Star/Month'}</span></td>
-      <td style="font-weight:500;font-size:13px">${n.categoryLabel}</td>
+      <td style="color:var(--acc-gray-500);font-size:10px">${i+1}</td>
+      <td><span style="font-size:10px;padding:2px 8px;border-radius:20px;background:${n.type==='quarterly'?'#f0e6ff':'#fff8e0'};color:${n.type==='quarterly'?'var(--acc-purple)':'#996600'};font-weight:600">${n.type==='quarterly'?'Quarterly':'Star/Month'}</span></td>
+      <td style="font-weight:500;font-size:11px">${n.categoryLabel}</td>
       <td><span class="nominee-link" onclick="openDetail('${n.id}')">${n.nomineeName}</span></td>
-      <td style="font-size:12px;color:var(--acc-gray-500)">${n.nomineeEmail}</td>
       <td>${n.team}</td>
-      <td style="font-size:12px;color:var(--acc-gray-500)">${n.subTeam||'—'}</td>
-      <td style="font-size:12px;color:var(--acc-gray-500)">${n.nominatedBy}</td>
-      <td style="font-size:12px;color:var(--acc-gray-500);white-space:nowrap">${n.date}</td>
+      <td style="font-size:10px;color:var(--acc-gray-500)">${n.subTeam||'—'}</td>
+      <td style="font-size:10px;color:var(--acc-gray-500)">${n.nominatedBy}</td>
+      <td style="font-size:10px;color:var(--acc-gray-500);white-space:nowrap">${formatDateOnly(n.date)}</td>
       <td><span class="badge badge-${n.status==='approved'?'approved':'pending'}">${n.status==='approved'?'✔ Approved':'⏳ Pending'}</span></td>
-      <td class="${rankClass}" style="font-size:13px;text-align:center">${rankLabel}</td>
-      <td style="font-size:12px;white-space:nowrap">
+      <td class="${rankClass}" style="font-size:11px;text-align:center">${rankLabel}</td>
+      <td style="font-size:10px;white-space:nowrap">
         ${n.status==='approved'&&n.approvedBy?`<span style="color:#007a5a;font-weight:600">✔ ${n.approvedBy}</span>`:n.removedBy?`<span style="color:var(--acc-red);font-weight:600">✖ ${n.removedBy}</span>`:'<span style="color:var(--acc-gray-300)">—</span>'}
       </td>
       <td>
@@ -1908,7 +1991,7 @@ function addEditTeamMember(name='', email='') {
   const rowId = 'etmr-'+editMemberRowId;
   const div = document.createElement('div');
   div.className = 'team-member-row'; div.id = rowId;
-  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="etm-name" value="${name.replace(/"/g,'&quot;')}" /><input type="email" placeholder="email@accenture.com" maxlength="45" data-role="etm-email" value="${email.replace(/"/g,'&quot;')}" /><button type="button" class="remove-member-btn" onclick="removeEditTeamMember('${rowId}')">✕</button>`;
+  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="etm-name" value="${name.replace(/"/g,'&quot;')}" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" /><input type="email" placeholder="email@accenture.com" maxlength="45" data-role="etm-email" value="${email.replace(/"/g,'&quot;')}" /><button type="button" class="remove-member-btn" onclick="removeEditTeamMember('${rowId}')">✕</button>`;
   document.getElementById('edit-team-members-rows').appendChild(div);
 }
 function removeEditTeamMember(rowId) { const el = document.getElementById(rowId); if (el) el.remove(); }
@@ -2069,7 +2152,7 @@ function openDetail(id) {
       <div class="detail-section"><div class="detail-label">Team</div><div class="detail-value">${n.team||'—'}</div></div>
       <div class="detail-section"><div class="detail-label">Sub Team</div><div class="detail-value">${n.subTeam||'—'}</div></div>
       <div class="detail-section"><div class="detail-label">Nominated By</div><div class="detail-value">${n.nominatedBy}</div></div>
-      <div class="detail-section"><div class="detail-label">Date</div><div class="detail-value">${n.date}</div></div>
+      <div class="detail-section"><div class="detail-label">Date</div><div class="detail-value">${formatDateOnly(n.date)}</div></div>
       <div class="detail-section"><div class="detail-label">Rank</div><div class="detail-value" style="font-size:15px;font-weight:700">${rankDisplay}</div></div>
     </div>
     ${membersHtml}
@@ -2206,7 +2289,7 @@ updateStats();
     <input type="hidden" id="edit-id" />
     <div class="edit-form-group">
       <label>Nominee Name <span class="req">*</span></label>
-      <input type="text" id="edit-name" maxlength="45" />
+      <input type="text" id="edit-name" maxlength="45" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
     </div>
     <div class="edit-form-group">
       <label>Nominee Email <span class="req">*</span></label>
@@ -2220,7 +2303,7 @@ updateStats();
     <div class="edit-form-group">
       <label>Team Sub Name</label>
       <input type="text" id="edit-subteam" maxlength="45" />
-      <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, UXP etc. Please don't mention Squad Name.</div>
+      <div class="field-hint">Data Engineering, EDL, Testing, Design, Solution Arch, Preventative Maintenance, PMO, UXP etc. (Please don't mention Squad Name) </div>
     </div>
     <!-- Team Award members — shown only when editing a team_award nomination -->
     <div id="edit-team-members-section" style="display:none;margin-bottom:16px">
@@ -2278,6 +2361,20 @@ updateStats();
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-delete')">Cancel</button>
       <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NOMINEE DETAIL -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal" style="max-width:600px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h3>👤 Nomination Details</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-detail')" style="font-size:18px;padding:4px 10px;line-height:1">✕</button>
+    </div>
+    <div id="detail-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-detail')">Close</button>
     </div>
   </div>
 </div>
