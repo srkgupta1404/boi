@@ -691,6 +691,12 @@
     <div class="sso-badge"><div class="sso-dot"></div> Protected by Accenture Identity &amp; Access Management</div>
   </div>
 </div>
+
+<!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
+<div class="topbar" id="topbar" style="display:none">
+  <div class="topbar-logo">
+    <div class="acc-logo">Acc<span>enture</span></div>
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.2)"></div>
     <div class="topbar-title">BOI · Rewards &amp; Recognition</div>
   </div>
   <div class="topbar-right">
@@ -1304,6 +1310,10 @@ function finishLogin() {
   document.getElementById('topbar').style.display = 'flex';
   document.getElementById('main-app').style.display = 'flex';
   document.getElementById('main-app').style.flexDirection = 'column';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-quarterly').classList.add('active');
+  document.querySelector('.nav-tab').classList.add('active');
   buildCategoryCards();
   loadNominationsFromSheet();
   updateStats();
