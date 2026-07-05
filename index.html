@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Accenture BOI — Rewards & Recognition Portal</title>
-<style> 
+<style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Barlow:wght@600;700;800&display=swap');
 
   :root {
@@ -731,6 +731,7 @@
     <div class="nav-tab" onclick="showTab('star')">⭐ Star of the Month</div>
     <div class="nav-tab" onclick="showTab('submissions')">📋 All Submissions <span class="tab-badge" id="badge-all">0</span></div>
     <div class="nav-tab" onclick="showTab('admin')">⚙ Admin</div>
+    <div class="nav-tab" onclick="showTab('howto')">📖 How-To Guide</div>
   </div>
 
   <!-- ══ PAGE: QUARTERLY AWARDS ══ -->
@@ -786,8 +787,14 @@
 
           <div class="form-group">
             <label>Team Name <span class="req">*</span></label>
-            <input type="text" id="q-team" maxlength="45" placeholder="Enter team name" />
-            <div class="field-hint">AMS, Data Solution, Shared Services, CIF, Other etc.</div>
+            <select id="q-team">
+              <option value="" disabled selected>Select team…</option>
+              <option value="AMS">AMS</option>
+              <option value="Data Solutions">Data Solutions</option>
+              <option value="Shared Services">Shared Services</option>
+              <option value="CIF">CIF</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Team Sub Name</label>
@@ -833,8 +840,14 @@
           </div>
           <div class="form-group">
             <label>Team Name <span class="req">*</span></label>
-            <input type="text" id="s-team" maxlength="45" placeholder="Enter team name" />
-            <div class="field-hint">AMS, Data Solution, Shared Services, CIF, Other etc.</div>
+            <select id="s-team">
+              <option value="" disabled selected>Select team…</option>
+              <option value="AMS">AMS</option>
+              <option value="Data Solutions">Data Solutions</option>
+              <option value="Shared Services">Shared Services</option>
+              <option value="CIF">CIF</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Team Sub Name</label>
@@ -929,6 +942,18 @@
     </div>
 
     <div id="admin-panel-content">
+      <!-- Sync / Google Sheets status -->
+      <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <h4 style="font-size:14px;font-weight:700;margin-bottom:4px">☁ Data Sync</h4>
+          <div style="font-size:12px;color:var(--acc-gray-500)" id="sync-status-text">Sync nominations and user data with the portal backend</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary" onclick="syncNominationsFromSheet()">🔄 Sync Nominations</button>
+          <button class="btn btn-secondary" onclick="refreshUsers()">🔄 Refresh Users</button>
+        </div>
+      </div>
+
       <!-- User Management Card -->
       <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:20px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
@@ -962,18 +987,6 @@
         </div>
       </div>
 
-      <!-- Sync / Google Sheets status -->
-      <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:20px;box-shadow:var(--shadow-sm);margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-        <div style="flex:1;min-width:200px">
-          <h4 style="font-size:14px;font-weight:700;margin-bottom:4px">☁ Data Sync</h4>
-          <div style="font-size:12px;color:var(--acc-gray-500)" id="sync-status-text">Sync nominations and user data with the portal backend</div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-secondary" onclick="syncNominationsFromSheet()">🔄 Sync Nominations</button>
-          <button class="btn btn-secondary" onclick="refreshUsers()">🔄 Refresh Users</button>
-        </div>
-      </div>
-
       <!-- Passcode operations info -->
       <div style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:20px;">
         <h4 style="font-size:15px;font-weight:700;margin-bottom:6px">Passcode Operations</h4>
@@ -988,6 +1001,342 @@
         <button class="btn btn-danger" onclick="openFlushModal()">🗑 Flush All Entries</button>
       </div>
     </div>
+  </div>
+
+  <!-- ══ PAGE: HOW-TO GUIDE ══ -->
+  <div class="page" id="page-howto">
+    <div class="section-header">
+      <div>
+        <div class="section-title">📖 How-To Guide</div>
+        <div class="section-desc">Everything you need to know about using the Rewards &amp; Recognition Portal — for users and admins alike</div>
+      </div>
+    </div>
+
+    <!-- Timeline / Deadlines notice banner -->
+    <div style="background:linear-gradient(120deg,#1a003a 0%,#0D0D0D 100%);border-radius:var(--radius);border:1px solid rgba(161,0,255,0.35);padding:28px 32px;margin-bottom:28px;box-shadow:0 4px 24px rgba(161,0,255,0.15);position:relative;overflow:hidden">
+      <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(161,0,255,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none"></div>
+      <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap">
+        <div style="font-size:36px;line-height:1">📅</div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-family:'Barlow',sans-serif;font-size:19px;font-weight:800;color:white;margin-bottom:6px">Submission Timelines &amp; Deadlines</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.8">
+            Deadlines for each award cycle — both <strong style="color:var(--acc-purple-light)">Quarterly Awards</strong> and <strong style="color:var(--acc-purple-light)">Star of the Month</strong> — are announced and shared with <em>all team members well in advance</em> before the cycle opens. You will receive a communication via email and/or team channels with the exact open date, submission window, and closing deadline for that period.<br/><br/>
+            <strong style="color:white">Please do not wait until the last day.</strong> Nominations submitted close to the deadline may not receive the attention they deserve. We encourage everyone to nominate as soon as they witness outstanding work worth celebrating.<br/><br/>
+            <span style="background:rgba(161,0,255,0.25);border-radius:6px;padding:4px 10px;font-size:12px;color:var(--acc-purple-light);font-weight:600">📣 Watch out for the official announcement emails from the BOI R&amp;R Admin Team for upcoming cycle dates.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick-nav pills -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px">
+      <a href="#howto-overview" style="text-decoration:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer">🗺 Overview</span></a>
+      <a href="#howto-login" style="text-decoration:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600">🔐 Logging In</span></a>
+      <a href="#howto-nominate" style="text-decoration:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600">🏆 Nominating</span></a>
+      <a href="#howto-submissions" style="text-decoration:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600">📋 Submissions</span></a>
+      <a href="#howto-admin" id="howto-admin-navpill" style="text-decoration:none;display:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-gray-200);color:var(--acc-gray-700);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600">⚙ Admin Guide</span></a>
+      <a href="#howto-faq" style="text-decoration:none"><span style="display:inline-flex;align-items:center;gap:6px;background:var(--acc-gray-200);color:var(--acc-gray-700);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:600">❓ FAQs</span></a>
+    </div>
+
+    <!-- ── SECTION 1: Overview ── -->
+    <div id="howto-overview" style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden">
+      <div style="background:linear-gradient(90deg,var(--acc-purple),var(--acc-purple-dark));padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🗺</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">1 — What is This Portal?</div>
+      </div>
+      <div style="padding:28px">
+        <p style="font-size:14px;color:var(--acc-gray-700);line-height:1.8;margin-bottom:16px">The <strong>Accenture BOI Rewards &amp; Recognition (R&amp;R) Portal</strong> is the official platform for celebrating exceptional work within the BOI project team. It gives every team member an easy way to formally nominate colleagues who have gone above and beyond — and gives admins the tools to review, approve, and rank those nominations.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:8px">
+          <div style="background:var(--acc-purple-bg);border-radius:var(--radius-sm);padding:16px">
+            <div style="font-size:22px;margin-bottom:6px">🏆</div>
+            <div style="font-size:13px;font-weight:700;color:var(--acc-purple);margin-bottom:4px">Quarterly Awards</div>
+            <div style="font-size:12px;color:var(--acc-gray-700);line-height:1.6">Recognise standout individual or team performance over a full quarter. Multiple categories available — Client Focus, Innovation, Collaboration, and more.</div>
+          </div>
+          <div style="background:#FFF8EC;border-radius:var(--radius-sm);padding:16px">
+            <div style="font-size:22px;margin-bottom:6px">⭐</div>
+            <div style="font-size:13px;font-weight:700;color:var(--acc-gold);margin-bottom:4px">Star of the Month</div>
+            <div style="font-size:12px;color:var(--acc-gray-700);line-height:1.6">A monthly spotlight for someone who truly stood out — quick, impactful, and easy to submit. Great for recognising day-to-day excellence.</div>
+          </div>
+          <div style="background:var(--acc-green-bg);border-radius:var(--radius-sm);padding:16px">
+            <div style="font-size:22px;margin-bottom:6px">📋</div>
+            <div style="font-size:13px;font-weight:700;color:#007a5a;margin-bottom:4px">Transparent Tracking</div>
+            <div style="font-size:12px;color:var(--acc-gray-700);line-height:1.6">All submissions are visible to registered users. You can view statuses (Pending / Approved), filter, search, and download reports at any time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: Logging In ── -->
+    <div id="howto-login" style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden">
+      <div style="background:linear-gradient(90deg,var(--acc-purple),var(--acc-purple-dark));padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🔐</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">2 — Logging In &amp; Your Account</div>
+      </div>
+      <div style="padding:28px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--acc-black);margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="background:var(--acc-purple);color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span> Enter your Accenture email</div>
+            <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">On the login screen, type your full <strong>@accenture.com</strong> email address and click <em>Continue</em>. Only pre-registered Accenture emails are accepted — if yours hasn't been registered yet, contact an Admin.</p>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--acc-black);margin-bottom:10px;display:flex;align-items:center;gap:8px"><span style="background:var(--acc-purple);color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span> Enter your password</div>
+            <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">Your initial password is set by the Admin when they register your account. You can change it at any time using the <em>"Change Password"</em> link on the login screen before signing in.</p>
+          </div>
+        </div>
+        <div style="background:var(--acc-gold-bg);border:1px solid #ffd980;border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;color:#7a5200;line-height:1.7">
+          <strong>💡 First time logging in?</strong> Use the initial password provided by your Admin. You are strongly encouraged to change it immediately using the <em>Change Password</em> link. Passwords must be at least 8 characters. If you ever forget your password, contact an Admin who can reset it for you from the Admin panel.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: Submitting a Nomination ── -->
+    <div id="howto-nominate" style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden">
+      <div style="background:linear-gradient(90deg,var(--acc-purple),var(--acc-purple-dark));padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">✍️</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">3 — Submitting a Nomination</div>
+      </div>
+      <div style="padding:28px">
+
+        <!-- Quarterly -->
+        <div style="margin-bottom:24px">
+          <div style="font-size:15px;font-weight:700;color:var(--acc-black);margin-bottom:12px;display:flex;align-items:center;gap:8px">🏆 Quarterly Awards Nomination</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Select a Category</strong> — Choose from the award categories displayed at the top of the Quarterly Awards tab (e.g. Client Focus, Innovation, Collaboration, Team Award, etc.). Click the category card to select it; it will highlight in purple.</p>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Fill in the Nominee Details</strong> — Enter the nominee's <em>full name</em> (letters only) and their <em>@accenture.com email</em>. For <strong>Team Awards</strong>, use the primary nominee fields for the main member and click <em>"＋ Add Member"</em> to add additional team members (each needs a unique name and email).</p>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Team Name &amp; Sub Team</strong> — Provide the team name (e.g. AMS, Data Solution, Shared Services, CIF) and the sub-team if applicable (e.g. Data Engineering, EDL, Testing, PMO). Do <em>not</em> mention the Squad Name.</p>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">4</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Write the Reason / Citation</strong> — This is the most important part. Describe <em>specifically</em> what the person did, the impact it had, and the behaviour they demonstrated. Be concrete and detailed. You have up to 1,500 characters. A strong citation significantly increases the chance of approval.</p>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="background:var(--acc-purple-bg);color:var(--acc-purple);border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px">5</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Submit</strong> — Click <em>"Submit Nomination →"</em>. You will see a confirmation toast notification. Your submission will immediately appear in <em>All Submissions</em> with a <strong>Pending</strong> status.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--acc-gray-200);margin-bottom:20px"></div>
+
+        <!-- Star of the Month -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:15px;font-weight:700;color:var(--acc-black);margin-bottom:12px;display:flex;align-items:center;gap:8px">⭐ Star of the Month Nomination</div>
+          <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin-bottom:10px">Star of the Month nominations follow the same process as above — fill in the nominee's name, email, team, sub-team, and reason — but there is <strong>no category selection</strong> required. Go to the <em>⭐ Star of the Month</em> tab and complete the form directly.</p>
+          <div style="background:var(--acc-green-bg);border:1px solid #b3f0df;border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;color:#005c42;line-height:1.7">
+            <strong>✅ Tip:</strong> Star of the Month nominations are ideal for recognising someone who made a difference right now — a great client interaction, clutch delivery, or quietly keeping things running. You don't need to wait for the quarterly cycle.
+          </div>
+        </div>
+
+        <div style="background:var(--acc-red-bg);border:1px solid #ffcccc;border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;color:#aa0000;line-height:1.7">
+          <strong>⚠ Important:</strong> You can only nominate registered @accenture.com users. Nominations are submitted under your logged-in identity. You can edit your own nominations at any time from the <em>All Submissions</em> tab as long as they are still in <strong>Pending</strong> status.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: All Submissions ── -->
+    <div id="howto-submissions" style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden">
+      <div style="background:linear-gradient(90deg,var(--acc-purple),var(--acc-purple-dark));padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">📋</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">4 — Viewing All Submissions</div>
+      </div>
+      <div style="padding:28px">
+        <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin-bottom:18px">The <strong>All Submissions</strong> tab is the central view of every nomination that has been submitted. All registered users can view this page. Here's what you can do:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px">
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">🔍</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">Search</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">Type in the search box to filter nominations by nominee name instantly.</div>
+          </div>
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">🎛</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">Filter Buttons</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">Use the quick filter buttons to view All, Quarterly only, Star/Month only, Pending only, or Approved only.</div>
+          </div>
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">▼</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">Column Filters</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">Click the ▼ icon on any column header (Type, Category, Team, Status, etc.) to filter by specific values — works like an Excel filter.</div>
+          </div>
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">⬇</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">Download Report</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">Click <em>"⬇ Download Excel Report"</em> to export all currently visible (filtered) nominations as an Excel file.</div>
+          </div>
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">👁</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">View Details</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">Click the <em>View</em> button on any row to open the full nomination details, including the complete citation text.</div>
+          </div>
+          <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:14px">
+            <div style="font-size:18px;margin-bottom:6px">✏️</div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px">Edit Your Nominations</div>
+            <div style="font-size:12px;color:var(--acc-gray-500);line-height:1.6">You can edit nominations <em>you submitted</em> as long as they are still in Pending status. Click <em>Edit</em> on your row to make changes.</div>
+          </div>
+        </div>
+        <div style="background:var(--acc-purple-bg);border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;color:var(--acc-purple-dark);line-height:1.7">
+          <strong>Status Guide — </strong>
+          <span style="background:#FFF0F0;color:var(--acc-red);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;margin:0 4px">Pending</span> means the nomination is awaiting admin review.
+          <span style="background:var(--acc-green-bg);color:#007a5a;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;margin:0 4px">Approved</span> means it has been reviewed and finalised by an admin. An approved entry may also have a <strong>Rank</strong> assigned.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: Admin Guide ── -->
+    <div id="howto-admin" style="background:white;border-radius:var(--radius);border:1.5px solid var(--acc-purple-bg);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden;display:none">
+      <div style="background:linear-gradient(90deg,#1a003a,#0D0D0D);padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(161,0,255,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">⚙</div>
+        <div style="flex:1">
+          <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">5 — Admin Guide</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px">This Section is visible to Admin only & meant for Admin-role users only</div>
+        </div>
+        <span style="background:rgba(161,0,255,0.3);color:var(--acc-purple-light);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700">🔒 Admin Only</span>
+      </div>
+      <div style="padding:28px">
+        <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin-bottom:20px">The <strong>Admin panel</strong> is only accessible to users registered with the <em>Admin</em> role. Non-admin users will see a locked screen when visiting the Admin tab. Below is a full walkthrough of every admin function.</p>
+
+        <!-- 5a Data Sync -->
+        <div style="margin-bottom:22px">
+          <div style="font-size:14px;font-weight:700;color:var(--acc-black);margin-bottom:8px;display:flex;align-items:center;gap:8px">☁ Data Sync</div>
+          <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">The Data Sync panel is the first thing you'll see in the Admin tab. Use <strong>"🔄 Sync Nominations"</strong> to pull the latest nomination data from the portal backend, and <strong>"🔄 Refresh Users"</strong> to reload the user list. Always sync after onboarding new users or if you suspect the display is stale. The status line below the heading confirms the last sync result.</p>
+        </div>
+
+        <!-- 5b User Management -->
+        <div style="margin-bottom:22px">
+          <div style="font-size:14px;font-weight:700;color:var(--acc-black);margin-bottom:8px;display:flex;align-items:center;gap:8px">👥 User Management</div>
+          <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin-bottom:10px">Manage who can access the portal. Only registered @accenture.com users can log in — no self-registration is possible.</p>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:#0D0D0D;color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">A</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Register a New User</strong> — Click <em>"＋ Register New User"</em>, enter their Accenture email, full name, initial password, and role (User or Admin). Share the initial password securely with the new user and advise them to change it on first login.</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:#0D0D0D;color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">B</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Edit a User</strong> — In the user table, click <em>Edit</em> next to any user to update their name, email, role, or reset their password. Use the search box above the table to quickly find a specific user.</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:#0D0D0D;color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">C</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Delete a User</strong> — Click <em>Delete</em> to permanently remove a user account. This prevents them from logging in. Their past nominations are unaffected.</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:#0D0D0D;color:white;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px">D</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0"><strong>Reset a User's Password</strong> — From the Edit User modal, use the <em>Reset Password</em> option to set a new password for the user. Communicate the new password to them directly and securely.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5c Approving / Rejecting -->
+        <div style="margin-bottom:22px">
+          <div style="font-size:14px;font-weight:700;color:var(--acc-black);margin-bottom:8px;display:flex;align-items:center;gap:8px">🏅 Approving &amp; Rejecting Nominations</div>
+          <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin-bottom:10px">Admins action nominations from the <strong>All Submissions</strong> tab, not the Admin panel itself. Each row in the submissions table has action buttons:</p>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:var(--acc-green-bg);color:#007a5a;border-radius:4px;padding:3px 9px;font-size:11px;font-weight:700;flex-shrink:0">Approve</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">Click <em>Approve</em> on a Pending nomination. You'll be prompted for the <strong>Approval Passcode</strong> (case-sensitive). You may also optionally assign a numeric rank (1, 2, 3…) to the nominee. Once confirmed, the status changes to <em>Approved</em>.</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:var(--acc-red-bg);color:var(--acc-red);border-radius:4px;padding:3px 9px;font-size:11px;font-weight:700;flex-shrink:0">Reject</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">Click <em>Reject</em> on an Approved nomination to revert it back to <em>Pending</em>. Requires the <strong>Rejection Passcode</strong>. Use this if an approval was made in error or requires further review.</p>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <span style="background:var(--acc-red-bg);color:var(--acc-red);border-radius:4px;padding:3px 9px;font-size:11px;font-weight:700;flex-shrink:0">Delete</span>
+              <p style="font-size:13px;color:var(--acc-gray-700);line-height:1.7;margin:0">Any admin can permanently delete a nomination using the <strong>Deletion Passcode</strong>. This is irreversible — use it only when a submission needs to be removed entirely (duplicate, error, inappropriate content).</p>
+            </div>
+          </div>
+          <div style="background:var(--acc-gold-bg);border:1px solid #ffd980;border-radius:var(--radius-sm);padding:12px 16px;font-size:12px;color:#7a5200;line-height:1.7;margin-top:12px">
+            <strong>🔑 Passcode Note:</strong> All approval, rejection, and deletion actions are passcode-protected. Passcodes are case-sensitive and are maintained by the Admin team. If you are an admin and do not have the passcode, contact the Portal Product Owner.
+          </div>
+        </div>
+
+        <!-- 5d Passcode Ops -->
+        <div style="margin-bottom:22px">
+          <div style="font-size:14px;font-weight:700;color:var(--acc-black);margin-bottom:8px;display:flex;align-items:center;gap:8px">🔐 Passcode Operations Summary</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+            <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-size:13px;font-weight:700;color:var(--acc-green);margin-bottom:4px">Approval Passcode</div>
+              <div style="font-size:11px;color:var(--acc-gray-500);line-height:1.5">Used to approve a nomination and optionally assign a rank</div>
+            </div>
+            <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-size:13px;font-weight:700;color:var(--acc-gold);margin-bottom:4px">Rejection Passcode</div>
+              <div style="font-size:11px;color:var(--acc-gray-500);line-height:1.5">Used to revert an approved nomination back to Pending</div>
+            </div>
+            <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-size:13px;font-weight:700;color:var(--acc-red);margin-bottom:4px">Deletion Passcode</div>
+              <div style="font-size:11px;color:var(--acc-gray-500);line-height:1.5">Used to permanently delete any nomination from the system</div>
+            </div>
+            <div style="border:1px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:12px;text-align:center">
+              <div style="font-size:13px;font-weight:700;color:#990000;margin-bottom:4px">Flush Passcode</div>
+              <div style="font-size:11px;color:var(--acc-gray-500);line-height:1.5">Danger Zone — wipes all submissions. Irreversible. Use only at end of cycle.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5e Danger Zone -->
+        <div style="background:var(--acc-red-bg);border:1.5px solid #ffcccc;border-radius:var(--radius-sm);padding:16px 20px">
+          <div style="font-size:14px;font-weight:700;color:var(--acc-red);margin-bottom:8px">⚠ Danger Zone — Flush All Entries</div>
+          <p style="font-size:13px;color:#aa0000;line-height:1.7;margin:0">The <em>"🗑 Flush All Entries"</em> button in the Admin panel permanently deletes <strong>every single submission</strong> across all categories and award types. This action <strong>cannot be undone</strong>. It requires the Flush Passcode and should only be used at the end of an award cycle once all results have been recorded and communicated externally.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6: FAQs ── -->
+    <div id="howto-faq" style="background:white;border-radius:var(--radius);border:1px solid var(--acc-gray-200);box-shadow:var(--shadow-sm);margin-bottom:20px;overflow:hidden">
+      <div style="background:linear-gradient(90deg,var(--acc-purple),var(--acc-purple-dark));padding:18px 28px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">❓</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:18px;font-weight:700;color:white">6 — Frequently Asked Questions</div>
+      </div>
+      <div style="padding:28px;display:flex;flex-direction:column;gap:0">
+
+        <details style="border-bottom:1px solid var(--acc-gray-200);padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I nominate myself? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">No. The portal is designed for peer and manager recognition. Self-nominations are not in the spirit of the R&amp;R programme and will be reviewed accordingly by the admin team.</p>
+        </details>
+
+        <details style="border-bottom:1px solid var(--acc-gray-200);padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I nominate the same person more than once? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">Yes, within the same cycle — as long as the nominations are for different award categories or award types (e.g. one for Quarterly and one for Star of the Month). Multiple submissions for the exact same category and nominee in the same period will be reviewed by the admin.</p>
+        </details>
+
+        <details style="border-bottom:1px solid var(--acc-gray-200);padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">When will I know the results? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">Results are communicated by the Admin team after the submission window closes and the review process is complete. You can track the status of any nomination (including your own) in the All Submissions tab in real time. Approved nominations will have their status updated to <em>Approved</em> and may have a rank assigned.</p>
+        </details>
+
+        <details style="border-bottom:1px solid var(--acc-gray-200);padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">I can't log in — what do I do? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">If your login fails, it's most likely because your email hasn't been registered yet, or your password is incorrect. Contact the Admin team to have your account created or your password reset. Only @accenture.com addresses are accepted.</p>
+        </details>
+
+        <details style="border-bottom:1px solid var(--acc-gray-200);padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">When does the submission window open and close? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">Submission timelines are published in advance by the Admin team via email and team communications. There is no automatic lock in the portal — it is the nominator's responsibility to submit within the communicated window. Late entries may not be considered for the current cycle.</p>
+        </details>
+
+        <details style="padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What makes a strong nomination? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0">The best nominations are <strong>specific</strong> and <strong>impactful</strong>. Mention the exact situation, what the person did, how it benefited the team or client, and what behaviours they demonstrated. Avoid vague phrases like "always does a great job" — instead describe a concrete example. A well-written citation is the strongest advocate your nominee has.</p>
+        </details>
+
+        <details style="padding:14px 0">
+          <summary style="font-size:13px;font-weight:600;color:var(--acc-black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can an Admin see my password? <span style="color:var(--acc-gray-300)">＋</span></summary>
+          <p style="font-size:13px;color:var(--acc-gray-500);line-height:1.7;margin-top:10px;margin-bottom:0"><strong>No — absolutely not.</strong> Passwords are never stored in plain text anywhere in the system. At the moment you set or change your password, it is immediately converted into an encrypted hash using <strong>SHA-256</strong> — a one-way cryptographic method. This means the original password cannot be read, reversed, or retrieved by anyone, including Admins. The only person who knows your password is <strong>you</strong>. If you forget it, an Admin can reset it to a new one — but they cannot see or recover your old one.</p>
+        </details>
+
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <div style="text-align:center;padding:20px 0 8px;font-size:12px;color:var(--acc-gray-300)">
+      Accenture BOI · Rewards &amp; Recognition Portal · For queries, contact the Admin team
+    </div>
+
   </div>
 
 </div><!-- /main-app -->
@@ -1118,8 +1467,14 @@
     </div>
     <div class="edit-form-group">
       <label>Team Name</label>
-      <input type="text" id="edit-team" maxlength="45" />
-      <div class="field-hint">AMS, Data Solution, Shared Services, CIF, Other etc.</div>
+      <select id="edit-team" style="width:100%;border:1.5px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:11px 14px;font-family:inherit;font-size:14px;color:var(--acc-black);outline:none;background:white">
+        <option value="" disabled>Select teamu2026</option>
+        <option value="AMS">AMS</option>
+        <option value="Data Solutions">Data Solutions</option>
+        <option value="Shared Services">Shared Services</option>
+        <option value="CIF">CIF</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
     <div class="edit-form-group">
       <label>Team Sub Name</label>
@@ -1599,7 +1954,7 @@ async function removeUser(email) {
 // ══════════════════════════════════════════════════════════════════
 function showTab(tab) {
   document.querySelectorAll('.nav-tab').forEach((t,i) => {
-    const tabs = ['quarterly','star','submissions','admin'];
+    const tabs = ['quarterly','star','submissions','admin','howto'];
     t.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1610,6 +1965,11 @@ function showTab(tab) {
     document.getElementById('admin-locked-msg').style.display = isAdmin ? 'none' : 'block';
     document.getElementById('admin-panel-content').style.display = isAdmin ? 'block' : 'none';
     if (isAdmin) refreshUsers();
+  }
+  if (tab === 'howto') {
+    const isAdmin = currentUser && currentUser.role === 'admin';
+    document.getElementById('howto-admin').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('howto-admin-navpill').style.display = isAdmin ? 'inline' : 'none';
   }
 }
 
@@ -2297,8 +2657,14 @@ updateStats();
     </div>
     <div class="edit-form-group">
       <label>Team Name</label>
-      <input type="text" id="edit-team" maxlength="45" />
-      <div class="field-hint">AMS, Data Solution, Shared Services, CIF, Other etc.</div>
+      <select id="edit-team" style="width:100%;border:1.5px solid var(--acc-gray-200);border-radius:var(--radius-sm);padding:11px 14px;font-family:inherit;font-size:14px;color:var(--acc-black);outline:none;background:white">
+        <option value="" disabled>Select teamu2026</option>
+        <option value="AMS">AMS</option>
+        <option value="Data Solutions">Data Solutions</option>
+        <option value="Shared Services">Shared Services</option>
+        <option value="CIF">CIF</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
     <div class="edit-form-group">
       <label>Team Sub Name</label>
