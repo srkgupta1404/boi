@@ -567,6 +567,16 @@
   }
   .filter-btn-icon:hover { background: var(--acc-purple-bg); border-color: var(--acc-purple); color: var(--acc-purple); }
   .filter-btn-icon.active { background: var(--acc-purple); border-color: var(--acc-purple); color: white; }
+  .sort-btn-icon {
+    flex-shrink: 0; width: 18px; height: 18px; border-radius: 3px;
+    border: 1px solid var(--acc-gray-300); background: white;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: var(--acc-gray-500); transition: all 0.15s;
+    user-select: none; font-style: normal;
+  }
+  .sort-btn-icon:hover { background: var(--acc-purple-bg); border-color: var(--acc-purple); color: var(--acc-purple); }
+  .sort-btn-icon.asc { background: var(--acc-purple-bg); border-color: var(--acc-purple); color: var(--acc-purple); }
+  .sort-btn-icon.desc { background: var(--acc-purple); border-color: var(--acc-purple); color: white; }
 
   /* dropdown panel */
   .excel-filter-panel {
@@ -899,6 +909,7 @@
           <button class="filter-btn" onclick="setFilter('star',this)">Star/Month</button>
           <button class="filter-btn" onclick="setFilter('pending',this)">Pending</button>
           <button class="filter-btn" onclick="setFilter('approved',this)">Approved</button>
+          <button class="filter-btn" id="btn-clear-all-filters" onclick="clearAllFilters()" style="display:none;background:var(--acc-red-bg);color:var(--acc-red);border-color:#ffcccc">✕ Clear Filters</button>
         </div>
       </div>
       <div style="overflow-x:auto">
@@ -906,16 +917,16 @@
           <thead>
             <tr>
               <th><div class="th-inner"><span class="th-label">#</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Type</span><span class="filter-btn-icon" id="fbtn-type" onclick="toggleFilter(event,'type')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Category</span><span class="filter-btn-icon" id="fbtn-category" onclick="toggleFilter(event,'category')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Nominee</span><span class="filter-btn-icon" id="fbtn-nominee" onclick="toggleFilter(event,'nominee')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Team</span><span class="filter-btn-icon" id="fbtn-team" onclick="toggleFilter(event,'team')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Sub Team</span><span class="filter-btn-icon" id="fbtn-subteam" onclick="toggleFilter(event,'subteam')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Nominated By</span><span class="filter-btn-icon" id="fbtn-nominatedby" onclick="toggleFilter(event,'nominatedby')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Date</span><span class="filter-btn-icon" id="fbtn-date" onclick="toggleFilter(event,'date')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Status</span><span class="filter-btn-icon" id="fbtn-status" onclick="toggleFilter(event,'status')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Rank</span><span class="filter-btn-icon" id="fbtn-rank" onclick="toggleFilter(event,'rank')">▼</span></div></th>
-              <th><div class="th-inner"><span class="th-label">Action By</span><span class="filter-btn-icon" id="fbtn-actionby" onclick="toggleFilter(event,'actionby')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Type</span><span class="sort-btn-icon" id="sbtn-type" onclick="toggleSort('type')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-type" onclick="toggleFilter(event,'type')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Category</span><span class="sort-btn-icon" id="sbtn-category" onclick="toggleSort('category')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-category" onclick="toggleFilter(event,'category')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Nominee</span><span class="sort-btn-icon" id="sbtn-nominee" onclick="toggleSort('nominee')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-nominee" onclick="toggleFilter(event,'nominee')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Team</span><span class="sort-btn-icon" id="sbtn-team" onclick="toggleSort('team')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-team" onclick="toggleFilter(event,'team')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Sub Team</span><span class="sort-btn-icon" id="sbtn-subteam" onclick="toggleSort('subteam')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-subteam" onclick="toggleFilter(event,'subteam')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Nominated By</span><span class="sort-btn-icon" id="sbtn-nominatedby" onclick="toggleSort('nominatedby')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-nominatedby" onclick="toggleFilter(event,'nominatedby')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Date</span><span class="sort-btn-icon" id="sbtn-date" onclick="toggleSort('date')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-date" onclick="toggleFilter(event,'date')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Status</span><span class="sort-btn-icon" id="sbtn-status" onclick="toggleSort('status')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-status" onclick="toggleFilter(event,'status')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Rank</span><span class="sort-btn-icon" id="sbtn-rank" onclick="toggleSort('rank')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-rank" onclick="toggleFilter(event,'rank')">▼</span></div></th>
+              <th><div class="th-inner"><span class="th-label">Action By</span><span class="sort-btn-icon" id="sbtn-actionby" onclick="toggleSort('actionby')" title="Sort">↕</span><span class="filter-btn-icon" id="fbtn-actionby" onclick="toggleFilter(event,'actionby')">▼</span></div></th>
               <th><div class="th-inner"><span class="th-label">Actions</span></div></th>
             </tr>
           </thead>
@@ -2013,7 +2024,7 @@ function addTeamMember() {
   const div = document.createElement('div');
   div.className = 'team-member-row';
   div.id = rowId;
-  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="tm-name" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" />
+  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="tm-name" oninput="this.value=this.value.replace(/[^a-zA-Z ]/g,'')" />
     <input type="email" placeholder="email@accenture.com" maxlength="45" data-role="tm-email" />
     <button type="button" class="remove-member-btn" onclick="removeTeamMember('${rowId}')" title="Remove">✕</button>`;
   document.getElementById('team-members-rows').appendChild(div);
@@ -2104,6 +2115,8 @@ function setFilter(f, btn) {
 
 const colFilters = {};
 let activeFilterCol = null;
+let sortCol = null;       // currently sorted column
+let sortDir = 'asc';      // 'asc' or 'desc'
 
 function getColValue(n, col) {
   switch(col) {
@@ -2240,6 +2253,30 @@ function updateFilterBtnState(col) {
 }
 function closeFilterPanel() { panel_pendingSelection = null; document.getElementById('excel-filter-panel').classList.remove('open'); activeFilterCol = null; }
 
+function toggleSort(col) {
+  if (sortCol === col) {
+    if (sortDir === 'asc') sortDir = 'desc';
+    else { sortCol = null; sortDir = 'asc'; } // third click clears sort
+  } else {
+    sortCol = col;
+    sortDir = 'asc';
+  }
+  // Update sort button icons
+  document.querySelectorAll('.sort-btn-icon').forEach(b => { b.classList.remove('asc','desc'); b.textContent = '↕'; });
+  if (sortCol) {
+    const btn = document.getElementById('sbtn-'+sortCol);
+    if (btn) { btn.classList.add(sortDir); btn.textContent = sortDir === 'asc' ? '↑' : '↓'; }
+  }
+  renderTable();
+}
+
+function clearAllFilters() {
+  Object.keys(colFilters).forEach(k => delete colFilters[k]);
+  document.querySelectorAll('.filter-btn-icon').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-clear-all-filters').style.display = 'none';
+  renderTable();
+}
+
 function renderTable() {
   const q = (document.getElementById('search-input').value || '').toLowerCase();
   let rows = nominations.filter(n => {
@@ -2259,6 +2296,22 @@ function renderTable() {
   for (const [col, selSet] of Object.entries(colFilters)) {
     if (selSet && selSet.size > 0) rows = rows.filter(n => selSet.has(getColValue(n, col)));
   }
+
+  // Show/hide Clear Filters button
+  const hasActiveFilters = Object.values(colFilters).some(s => s && s.size > 0);
+  const clearBtn = document.getElementById('btn-clear-all-filters');
+  if (clearBtn) clearBtn.style.display = hasActiveFilters ? 'inline-flex' : 'none';
+
+  // Apply column sort
+  if (sortCol) {
+    rows = [...rows].sort((a, b) => {
+      const va = getColValue(a, sortCol);
+      const vb = getColValue(b, sortCol);
+      const cmp = va.localeCompare(vb, undefined, { numeric: true, sensitivity: 'base' });
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+  }
+
   const tbody = document.getElementById('submissions-tbody');
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="12"><div class="empty-state"><div class="empty-icon">📭</div><p>No submissions match your filter.</p></div></td></tr>`;
@@ -2351,7 +2404,7 @@ function addEditTeamMember(name='', email='') {
   const rowId = 'etmr-'+editMemberRowId;
   const div = document.createElement('div');
   div.className = 'team-member-row'; div.id = rowId;
-  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="etm-name" value="${name.replace(/"/g,'&quot;')}" oninput="this.value=this.value.replace(/[^a-zA-Z\s]/g,'')" /><input type="email" placeholder="email@accenture.com" maxlength="45" data-role="etm-email" value="${email.replace(/"/g,'&quot;')}" /><button type="button" class="remove-member-btn" onclick="removeEditTeamMember('${rowId}')">✕</button>`;
+  div.innerHTML = `<input type="text" placeholder="Full Name" maxlength="45" data-role="etm-name" value="${name.replace(/"/g,'&quot;')}" oninput="this.value=this.value.replace(/[^a-zA-Z ]/g,'')" /><input type="email" placeholder="email@accenture.com" maxlength="45" data-role="etm-email" value="${email.replace(/"/g,'&quot;')}" /><button type="button" class="remove-member-btn" onclick="removeEditTeamMember('${rowId}')">✕</button>`;
   document.getElementById('edit-team-members-rows').appendChild(div);
 }
 function removeEditTeamMember(rowId) { const el = document.getElementById(rowId); if (el) el.remove(); }
@@ -2501,8 +2554,8 @@ function openDetail(id) {
     membersHtml = `<div class="detail-section"><div class="detail-label">All Team Members</div><table class="detail-members-table"><thead><tr><th>#</th><th>Name</th><th>Email</th></tr></thead><tbody><tr><td>1</td><td><strong>${n.nomineeName}</strong> <span style="font-size:11px;color:var(--acc-purple)">(Primary)</span></td><td>${n.nomineeEmail}</td></tr>${n.teamMembers.map((m,i)=>`<tr><td>${i+2}</td><td>${m.name||'—'}</td><td>${m.email||'—'}</td></tr>`).join('')}</tbody></table></div>`;
   }
   let actionHtml = '';
-  if (n.status==='approved'&&n.approvedBy) actionHtml = `<div class="detail-section"><div class="detail-label">Approved By</div><span class="action-by-badge">✔ ${n.approvedBy}</span>${n.approvedAt?`<span style="font-size:12px;color:var(--acc-gray-500);margin-left:8px">${n.approvedAt}</span>`:''}</div>`;
-  else if (n.removedBy) actionHtml = `<div class="detail-section"><div class="detail-label">Rejected By</div><span class="rejected-by-badge">✖ ${n.removedBy}</span>${n.removedAt?`<span style="font-size:12px;color:var(--acc-gray-500);margin-left:8px">${n.removedAt}</span>`:''}</div>`;
+  if (n.status==='approved'&&n.approvedBy) actionHtml = `<div class="detail-section"><div class="detail-label">Approved By</div><span class="action-by-badge">✔ ${n.approvedBy}</span>${n.approvedAt?`<span style="font-size:12px;color:var(--acc-gray-500);margin-left:8px">${formatDateOnly(n.approvedAt)}</span>`:''}</div>`;
+  else if (n.removedBy) actionHtml = `<div class="detail-section"><div class="detail-label">Rejected By</div><span class="rejected-by-badge">✖ ${n.removedBy}</span>${n.removedAt?`<span style="font-size:12px;color:var(--acc-gray-500);margin-left:8px">${formatDateOnly(n.removedAt)}</span>`:''}</div>`;
   document.getElementById('detail-modal-body').innerHTML = `
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--acc-gray-200)">
       <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--acc-purple),var(--acc-purple-dark));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;flex-shrink:0">${n.nomineeName.charAt(0).toUpperCase()}</div>
